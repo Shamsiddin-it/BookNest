@@ -1,0 +1,44 @@
+using Application.Interfaces;
+using Application.Responses;
+using Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebAPI.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class BooksController(IBookService bookService) : ControllerBase
+{
+    private IBookService service = bookService;
+    
+    [HttpGet]
+    public ApiResponse<List<Book>> GetBooks()
+    {
+        return service.GetBooks();
+    }
+
+    [HttpGet("{id:int}")]
+    public ApiResponse<Book> GetBook(int id)
+    {
+        return service.GetBook(id);
+    }
+
+    [HttpPost]
+    public ApiResponse<bool> AddBook(Book book)
+    {
+        return service.AddBook(book);
+    }
+
+    [HttpDelete]
+    public ApiResponse<bool> DeleteBook(int id)
+    {
+        return service.DeleteBook(id);
+    }
+
+    [HttpPut]
+    public ApiResponse<bool> UpdateBook(Book book)
+    {
+        return service.UpdateBook(book);
+    }
+
+}
