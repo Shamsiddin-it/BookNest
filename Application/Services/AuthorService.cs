@@ -1,4 +1,5 @@
 using System.Net;
+using Application.DTOs;
 using Application.Interfaces;
 using Application.Responses;
 using Domain.Interfaces;
@@ -6,9 +7,13 @@ using Domain.Models;
 
 namespace Application.Services;
 
-public class AuthorService(IAuthorRepository authorRepository) : IAuthorService
+public class AuthorService(
+    IAuthorRepository authorRepository,
+    IBookRepository bookRepository
+    ) : IAuthorService
 {
     private IAuthorRepository repository = authorRepository;
+    private readonly IBookRepository _bookRepository = bookRepository;
     public async Task<ApiResponse<bool>> AddAuthor(Author author)
     {
         var res = await repository.AddAuthor(author);
@@ -38,6 +43,21 @@ public class AuthorService(IAuthorRepository authorRepository) : IAuthorService
         var res = await repository.GetAuthors();
         return new ApiResponse<List<Author>>(HttpStatusCode.OK, "List of authors.", res);
     }
+
+    public async Task<ApiResponse<List<AuthorWithBooks>>> GetAuthorsWithBooks()
+    {
+        var authors = await repository.GetAuthors();
+        var res = authors.Select(x=>new AuthorWithBooks()
+        {
+            Id = x.Id,
+            Fullname = x.Fullname,
+            Country = x.Country,
+            BirthYear = x.BirthYear,
+            Books = _bookRepository.GetBooksByAuthorId(x.Id)
+        }).ToList();
+        return new ApiResponse<List<AuthorWithBooks>>(HttpStatusCode.OK, "List of authors.", res);
+    }
+
 
     public async Task<ApiResponse<bool>> UpdateAuthor(Author author)
     {

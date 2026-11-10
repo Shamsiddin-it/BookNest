@@ -1,3 +1,4 @@
+using Application.DTOs;
 using Application.Interfaces;
 using Application.Responses;
 using Domain.Models;
@@ -39,5 +40,11 @@ public class AuthorsController(IAuthorService authorService): ControllerBase
     public async Task<ApiResponse<List<Author>>> GetAuthors()
     {
         return await service.GetAuthors();
+    }
+
+    [HttpGet("authors-with-books")]
+    public async Task<ApiResponse<List<AuthorWithBooks>>> GetAuthorsWithBooks()
+    {
+        return await service.GetAuthorsWithBooks();
     }
 }

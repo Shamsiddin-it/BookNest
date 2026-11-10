@@ -10,4 +10,6 @@ public interface IBookService
     ApiResponse<bool> DeleteBook(int id);
     ApiResponse<Book> GetBook(int id);
     ApiResponse<List<Book>> GetBooks();
+
+    ApiResponse<List<Book>> GetBooksByAuthorId(int authorId);
 }

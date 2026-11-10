@@ -9,4 +9,5 @@ public interface IBookRepository
     bool DeleteBook(int id);
     Book GetBook(int id);
     List<Book> GetBooks();
+    List<Book> GetBooksByAuthorId(int authorid);
 }

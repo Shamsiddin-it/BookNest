@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using Application.Interfaces;
 using Application.Responses;
@@ -37,6 +38,13 @@ public class BookService(IBookRepository bookRepository) : IBookService
         var res = repository.GetBooks();
         return new ApiResponse<List<Book>>(HttpStatusCode.OK, "List of books.", res);
     }
+
+    public ApiResponse<List<Book>> GetBooksByAuthorId(int authorId)
+    {
+        var res = repository.GetBooksByAuthorId(authorId);
+        return new ApiResponse<List<Book>>(HttpStatusCode.OK, "List of books of given author id.", res);
+    }
+
 
     public ApiResponse<bool> UpdateBook(Book book)
     {

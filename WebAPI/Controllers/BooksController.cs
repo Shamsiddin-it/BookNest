@@ -41,4 +41,9 @@ public class BooksController(IBookService bookService) : ControllerBase
         return service.UpdateBook(book);
     }
 
+    [HttpGet("get-by-authorId{authorId:int}")]
+    public ApiResponse<List<Book>> GetBooksByAuthorId(int authorId)
+    {
+        return service.GetBooksByAuthorId(authorId);
+    }
 }
