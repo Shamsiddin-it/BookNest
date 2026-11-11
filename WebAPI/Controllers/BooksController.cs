@@ -7,13 +7,17 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BooksController(IBookService bookService) : ControllerBase
+public class BooksController(
+    IBookService bookService,
+    ILogger<BooksController> logger) : ControllerBase
 {
     private IBookService service = bookService;
-    
+    private ILogger<BooksController> _logger = logger;
+
     [HttpGet]
     public ApiResponse<List<Book>> GetBooks()
     {
+        _logger.LogInformation("GET api/Books {date}", DateTime.Now);
         return service.GetBooks();
     }
 
