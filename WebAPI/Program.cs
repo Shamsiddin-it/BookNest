@@ -6,6 +6,7 @@ using Infrastructure.Repositories;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
+using WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,14 +23,14 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.File("logs/Booknest.log", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+// Log.Logger = new LoggerConfiguration()
+//     .MinimumLevel.Information()
+//     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+//     .Enrich.FromLogContext()
+//     .WriteTo.File("logs/Booknest.log", rollingInterval: RollingInterval.Day)
+//     .CreateLogger();
 
-builder.Host.UseSerilog();
+// builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -40,4 +41,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.Run();
